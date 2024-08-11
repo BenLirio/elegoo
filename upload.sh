@@ -27,6 +27,14 @@ if [ -z "$DEV_PORT" ]; then
     exit 1
 fi
 
+# Check if any process is using the device
+if sudo lsof "$DEV_PORT" > /dev/null; then
+    echo "The device $DEV_PORT is currently in use. Exiting."
+    exit 1
+else
+    echo "The device $DEV_PORT is not in use. Continuing."
+fi
+
 if [ -z "$SKETCH_PATH" ]; then
     echo "Error: SKETCH_PATH environment variable is not set."
     exit 1
